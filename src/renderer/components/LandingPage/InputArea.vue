@@ -7,6 +7,8 @@
 </template>
 
 <script>
+import MarkDownSample from '@/components/SmapleMarkdown/SampleMD.js'
+
 export default {
   data () {
     return {
@@ -14,7 +16,7 @@ export default {
     }
   },
   mounted () {
-    this.inputData = '# こんにちは\nvueとelectronを利用して作成したmarkdownエディターです。\n## 主な機能\n- 保存、読み込み\n- プレビュー\n- Qiita連携\nを検討しています。\n\nもし何かわからないことがあれば[コチラ](https://twitter.com/taka_Program)まで'
+    this.inputData = MarkDownSample
   },
   watch: {
     inputData () {
