@@ -19,7 +19,7 @@
     "postinstall": "npm run lint:fix"
   },
   "build": {
-    "productName": "vue-md-editer-electron",
+    "productName": "vue-md-editor-electron",
     "appId": "com.example.yourapp",
     "directories": {
       "output": "build"
