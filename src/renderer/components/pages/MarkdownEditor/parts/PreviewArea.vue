@@ -15,8 +15,8 @@ export default {
   },
   props: {
     markdownText: {
-      default: null,
-      type: String
+      type: String,
+      default: null
     }
   },
   data () {
@@ -36,7 +36,7 @@ export default {
 
 <style scoped>
 .preview-area {
-  height:85vh;
+  height:80vh;
   overflow-y: scroll;
 }
 </style>

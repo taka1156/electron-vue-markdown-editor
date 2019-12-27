@@ -28,6 +28,6 @@ export default {
 
 <style scoped>
 .input-area {
-  height:85vh;
+  height:80vh;
 }
 </style>
