@@ -8,7 +8,7 @@
 </template>
 
 <script>
-  import NaviBar from '@/components/Navi/NaviBar'
+  import NaviBar from '@/components/navi/NaviBar'
 
   export default {
     name: 'vue-md-editer-electron',

@@ -65,6 +65,6 @@ export default {
  }
 
  #logo{
-     font-size: 35px;
+     font-size: 20px;
  }
 </style>
