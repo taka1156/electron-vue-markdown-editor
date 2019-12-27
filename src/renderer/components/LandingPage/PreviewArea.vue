@@ -36,7 +36,7 @@ export default {
 
 <style scoped>
 .preview-area {
-  height:90vh;
+  height:85vh;
   overflow-y: scroll;
 }
 </style>
