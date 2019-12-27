@@ -10,8 +10,8 @@
 </template>
 
 <script>
-  import InputArea from '@/components/LandingPage/InputArea'
-  import PreviewArea from '@/components/LandingPage/PreviewArea'
+  import InputArea from './parts/InputArea'
+  import PreviewArea from './parts/PreviewArea'
   
   export default {
     name: 'editer',
