@@ -8,17 +8,17 @@ export default new Router({
     {
       path: '/',
       name: 'markdown-editor',
-      component: require('@/components/MarkdownEditer').default
+      component: require('@/components/pages/MarkdownEditor/MarkdownEditor').default
     },
     {
       path: '/file',
       name: 'file-list',
-      component: require('@/components/FileList').default
+      component: require('@/components/pages/FileList/FileList').default
     },
     {
       path: '/setting',
       name: 'setting-page',
-      component: require('@/components/Setting').default
+      component: require('@/components/pages/Setting/Setting').default
     }
   ]
 })
