@@ -7,16 +7,16 @@
 </template>
 
 <script>
-import MarkDownSample from '@/components/SmapleMarkdown/SampleMD.js'
+import SampleMD from '@/components/SmapleMarkdown/SampleMD.js'
 
 export default {
   data () {
     return {
-      inputData: null
+      inputData: ''
     }
   },
   mounted () {
-    this.inputData = MarkDownSample
+    this.inputData = SampleMD
   },
   watch: {
     inputData () {
@@ -28,6 +28,6 @@ export default {
 
 <style scoped>
 .input-area {
-  height:85vh;
+  height: 70vh;
 }
 </style>
