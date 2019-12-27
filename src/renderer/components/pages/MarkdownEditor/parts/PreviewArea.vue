@@ -1,7 +1,7 @@
 <template>
   <div class="PreviewArea">
     <h2>Preview</h2>
-    <markdown-it-vue class="md-body preview-area border" :content="markdownText" :options="options" />
+    <markdown-it-vue class="md-markdown preview-area border" :content="markdownText" :options="options" />
   </div>
 </template>
 
@@ -15,8 +15,8 @@ export default {
   },
   props: {
     markdownText: {
-      default: null,
-      type: String
+      type: String,
+      default: ''
     }
   },
   data () {
@@ -36,7 +36,7 @@ export default {
 
 <style scoped>
 .preview-area {
-  height:85vh;
+  height: 70vh;
   overflow-y: scroll;
 }
 </style>
