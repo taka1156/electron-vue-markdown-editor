@@ -3,15 +3,24 @@
     <main>
       <h1>MarkDown Editor</h1>
       <hr />
-      <button class="btn btn-light" @click="isChangeDisplay = !isChangeDisplay">
-        {{ changeBtn }}に切り替え
-      </button>
-      <InputArea class="float-left col-6" @updateText="updateText" />
-      <div v-show="!isChangeDisplay">
-        <PreviewArea class="float-right col-6" :markdownText="textData" />
+      <div class="d-flex flex-row-reverse">
+        <button class=" btn btn-light" @click="isChangeDisplay = !isChangeDisplay">
+          {{ changeBtn }}に切り替え
+        </button>
       </div>
-      <div v-show="isChangeDisplay">
-        <MarkdownSlide class="float-right col-6" :markdownText="textData" />
+      <div class="mt-2 h-75">
+        <div v-show="!isExpandSlide">
+          <InputArea class="float-left col-6" @updateText="updateText" />
+        </div>
+        <div v-show="!isChangeDisplay">
+          <PreviewArea class="float-right col-6" :markdownText="textData" />
+        </div>
+        <div v-show="isChangeDisplay">
+          <MarkdownSlide 
+            :class="{'float-right col-6':!isExpandSlide}" 
+            :markdownText="textData"
+          />
+        </div>
       </div>
     </main>
   </div>
@@ -31,8 +40,9 @@ export default {
   },
   data () {
     return {
-      textData: null,
-      isChangeDisplay: false
+      textData: '',
+      isChangeDisplay: false,
+      isExpandSlide: false
     }
   },
   computed: {
@@ -40,7 +50,6 @@ export default {
       if (this.isChangeDisplay) {
         return 'プレビュー'
       } else {
-        console.log(this.isChangeDisplay)
         return 'スライド'
       }
     }
@@ -48,6 +57,9 @@ export default {
   methods: {
     updateText (updateText) {
       this.textData = updateText
+    },
+    expandSlide (isExpandSlide) {
+      this.isExpandSlide = isExpandSlide
     }
   }
 }

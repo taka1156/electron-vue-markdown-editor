@@ -1,21 +1,46 @@
 <template>
   <div class="MarkdownSlide">
     <h2>Slide</h2>
-    <markdown-it-vue
-      class="slide-area border"
-      :content="slideDisplay"
-      :options="options"
-    />
-    <div class="d-flex justify-content-around">
-        <button @click="prevPage()">&lt;</button>
-        {{ page + 1 }}/{{ maxPage }}
-        <button @click="nextPage()">&gt;</button>
+    <div id="expandSlide" @keydown.esc="isExpandSlide = false">
+      <markdown-it-vue
+        class="md-markdown slide-area border"
+        :class="{'expand-slide':isExpandSlide}"
+        :content="slide"
+        :options="options"
+      />
+      <div class="d-flex flex-row border">
+          <button class="slide-navi-btn" @click="prevPage()">&lt;</button>
+          <button class="slide-navi-btn" @click="nextPage()">&gt;</button>
+          <button 
+            class="slide-navi-btn" 
+            @click="expandSlide()"
+          >「」</button>
+          {{ maxPage-(maxPage-page-1) }}/{{ maxPage }}
+          <input type="range" v-model="page" class="custom-range slide-navi-range" min="0" :max="maxPage-1" step="1" />
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 import markdownItVue from 'markdown-it-vue'
+import 'markdown-it-vue/dist/markdown-it-vue.css'
+
+function ElementRequestFullscreen (element) {
+  if (element.webkitRequestFullScreen) {
+    element.webkitRequestFullScreen()
+    return true
+  }
+  return false
+}
+
+function DocumentExitFullscreen (document) {
+  if (document.webkitExitFullscreen) {
+    document.webkitExitFullscreen()
+    return true
+  }
+  return false
+}
 
 export default {
   name: 'MarkdownSlide',
@@ -25,13 +50,14 @@ export default {
   props: {
     markdownText: {
       type: String,
-      default: null
+      default: ''
     }
   },
   data () {
     return {
       page: 0,
-      slide: null,
+      slideData: null,
+      isExpandSlide: false,
       options: {
         markdownIt: {
           injected: true,
@@ -49,11 +75,12 @@ export default {
   },
   computed: {
     maxPage () {
-      return this.slide.length
+      if (this.slideData === null) return 0
+      return this.slideData.length
     },
-    slideDisplay () {
-      if (this.slide === null) return null
-      return this.slide[this.page]
+    slide () {
+      if (this.slideData === null) return ''
+      return this.slideData[this.page]
     }
   },
   methods: {
@@ -64,10 +91,16 @@ export default {
       this.page = Math.min(this.page + 1, this.maxPage - 1)
     },
     makeSilde () {
-      if (this.markdownText === null) return null
       let buff = '' + this.markdownText
-      this.slide = buff.split('---')
-      console.log('value=>' + this.slide + 'len=>' + this.slide.length)
+      this.slideData = buff.split('---')
+    },
+    expandSlide () {
+      this.isExpandSlide = !this.isExpandSlide
+      if (this.isExpandSlide) {
+        ElementRequestFullscreen(document.getElementById('expandSlide'))
+      } else {
+        DocumentExitFullscreen(document)
+      }
     }
   }
 }
@@ -75,7 +108,24 @@ export default {
 
 <style scoped>
 .slide-area {
-  height:50vh;
+  height: 66vh;
+  background-color:white; 
   overflow-y: scroll;
+}
+
+.slide-navi-btn{
+  appearance: none;
+  font-size: 10px;
+  border-radius: 10px; 
+  background-color: cornflowerblue
+}
+
+input[type=range]::-webkit-slider-thumb {
+  background-color: cornflowerblue
+}
+
+.expand-slide{
+  height: 90vh;
+  width: 100vw;
 }
 </style>
