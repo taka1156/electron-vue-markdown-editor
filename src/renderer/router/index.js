@@ -7,6 +7,11 @@ export default new Router({
   routes: [
     {
       path: '/',
+      name: 'help-page',
+      component: require('@/components/pages/Help/Help').default
+    },
+    {
+      path: '/editor',
       name: 'markdown-editor',
       component: require('@/components/pages/MarkdownEditor/MarkdownEditor').default
     },
