@@ -13,6 +13,14 @@
                 <router-link to="/" >
                     <div class="d-flex flex-column">
                         <div class="mx-auto">
+                            <img src="~@/assets/navi-img/help.svg">
+                            <p class="mx-auto text-dark">Help</p>
+                        </div>
+                    </div>
+                </router-link>
+                <router-link to="/editor" >
+                    <div class="d-flex flex-column">
+                        <div class="mx-auto">
                             <img src="~@/assets/navi-img/edit.svg">
                             <p class="mx-auto text-dark">Edit</p>
                         </div>
