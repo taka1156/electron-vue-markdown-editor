@@ -1,7 +1,12 @@
 <template>
   <div class="PreviewArea">
     <h2>Preview</h2>
-    <markdown-it-vue class="md-markdown preview-area border" :content="markdownText" :options="options" />
+    <markdown-it-vue 
+      id="preview"
+      class="md-markdown preview-area border"
+      :content="markdownText"
+      :options="options"
+    />
   </div>
 </template>
 
@@ -17,6 +22,10 @@ export default {
     markdownText: {
       type: String,
       default: ''
+    },
+    scrTop: {
+      type: Number,
+      default: 0
     }
   },
   data () {
@@ -29,6 +38,12 @@ export default {
           linkify: true
         }
       }
+    }
+  },
+  watch: {
+    scrTop () {
+      let preview = document.getElementById('preview')
+      preview.scrollTop = this.scrTop
     }
   }
 }

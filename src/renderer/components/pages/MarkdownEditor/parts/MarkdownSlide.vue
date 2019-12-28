@@ -1,7 +1,11 @@
 <template>
   <div class="MarkdownSlide">
     <h2>Slide</h2>
-    <div id="expandSlide" @keydown.esc="isExpandSlide = false">
+    <div id="expandSlide" 
+      @keydown.exact.esc="isExpandSlide = false" 
+      @keydown.shift.78="nextPage()" 
+      @keydown.shift.80="prevPage()"
+    >
       <markdown-it-vue
         class="md-markdown slide-area border"
         :class="{'expand-slide':isExpandSlide}"
@@ -9,8 +13,14 @@
         :options="options"
       />
       <div class="d-flex flex-row border">
-          <button class="slide-navi-btn" @click="prevPage()">&lt;</button>
-          <button class="slide-navi-btn" @click="nextPage()">&gt;</button>
+          <button 
+            class="slide-navi-btn"
+            @click="prevPage()"
+          >&lt;</button>
+          <button 
+            class="slide-navi-btn"
+            @click="nextPage()"
+          >&gt;</button>
           <button 
             class="slide-navi-btn" 
             @click="expandSlide()"
