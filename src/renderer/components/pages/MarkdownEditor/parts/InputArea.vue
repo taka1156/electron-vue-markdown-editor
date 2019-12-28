@@ -1,13 +1,14 @@
 <template>
     <div class="InputArea">
         <h2>Input</h2>
-        <textarea id="input" class="input-area form-control" v-model="inputData">
+        <textarea id="input" class="input-area form-control" @keydown.shift.72="setCheetSheet()" v-model="inputData">
         </textarea>
     </div>
 </template>
 
 <script>
 import SampleMD from '@/components/SmapleMarkdown/SampleMD.js'
+import CheetSheet from '@/components/SmapleMarkdown/CheetSheet.js'
 
 export default {
   name: 'InputArea',
@@ -36,6 +37,9 @@ export default {
   methods: {
     handleScroll (posi) {
       this.$emit('scrollSync', posi)
+    },
+    setCheetSheet () {
+      this.inputData = CheetSheet
     }
   }
 }

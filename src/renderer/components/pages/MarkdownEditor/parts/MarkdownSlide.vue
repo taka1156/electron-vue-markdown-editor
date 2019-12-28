@@ -101,8 +101,7 @@ export default {
       this.page = Math.min(this.page + 1, this.maxPage - 1)
     },
     makeSilde () {
-      let buff = '' + this.markdownText
-      this.slideData = buff.split('---')
+      this.slideData = this.markdownText.split(/^---|\*\*\*$/gm)
     },
     expandSlide () {
       this.isExpandSlide = !this.isExpandSlide
