@@ -1,7 +1,11 @@
+/* eslint-disable */
 import Vue from 'vue'
 import Vuex from 'vuex'
-
-import { createPersistedState, createSharedMutations } from 'vuex-electron'
+/**参照(https://github.com/SimulatedGREG/electron-vue/issues/733#issuecomment-434850036)
+  `createSharedMutations()`
+  createSharedMutations
+*/
+import { createPersistedState } from 'vuex-electron'
 
 import modules from './modules'
 
@@ -11,7 +15,7 @@ export default new Vuex.Store({
   modules,
   plugins: [
     createPersistedState(),
-    createSharedMutations()
+    //createSharedMutations()
   ],
   strict: process.env.NODE_ENV !== 'production'
 })
