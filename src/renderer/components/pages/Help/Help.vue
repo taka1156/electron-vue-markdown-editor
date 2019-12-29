@@ -26,31 +26,35 @@
                 また、スライドの<code>「」</code>ボタンを押すことでフルスクリーンにすることもできます
             </p>
             <table class="mt-4 col-8 table table-bordered" >
-                    <thead class="thead-light">
-                        <tr>
-                        <th>ショートカットキー</th>
-                        <th>機能</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <th>shift + p</th>
-                            <th>スライドのいずれかのUIに触った状態で押すと1つ前に戻ります</th>
-                        </tr>
-                        <tr>
-                            <th>shift + n</th>
-                            <th>スライドのいずれかのUIに触った状態で押すと1つ後に進みます</th>
-                        </tr>
-                        <tr>
-                            <th>フルスクリーン状態でesc</th>
-                            <th>フルスクリーンの解除</th>
-                        </tr>
-                        <tr>
-                            <th>入力欄をクリックした状態で<br>shift + h</th>
-                            <th>入力欄にmarkdownのチートシートが上書きされます</th>
-                        </tr>
-                    </tbody>
-                </table>
+                <thead class="thead-light">
+                    <tr>
+                    <th>ショートカットキー</th>
+                    <th>機能</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th>shift + p</th>
+                        <th>スライドのいずれかのUIに触った状態で押すと1つ前に戻ります</th>
+                    </tr>
+                    <tr>
+                        <th>shift + n</th>
+                        <th>スライドのいずれかのUIに触った状態で押すと1つ後に進みます</th>
+                    </tr>
+                    <tr>
+                        <th>フルスクリーン状態でesc</th>
+                        <th>フルスクリーンの解除</th>
+                    </tr>
+                    <tr>
+                        <th>入力欄をクリックした状態で<br>shift + h</th>
+                        <th>入力欄にmarkdownのチートシートが上書きされます</th>
+                    </tr>
+                    <tr>
+                        <th>入力欄をクリックした状態で<br>shift + s</th>
+                        <th>上書き保存されます。(一度保存したことがあるもの)</th>
+                    </tr>
+                </tbody>
+            </table>
         </ul>
         </section>
 
@@ -59,9 +63,11 @@
             <img src="~@/assets/navi-img/folder.svg" class="icon">
             File:
         </h2>
-        <p>
-
-        </p>
+            <p class="ml-5">
+            フォルダに保存したファイルを一覧で表示します。<br>
+            デフォルトではOS固有のドキュメントフォルダに<strong>md</strong>という<br>
+            フォルダを作成しその中に保存します。
+            </p>
         </section>
 
          <section class="mt-2">
