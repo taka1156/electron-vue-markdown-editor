@@ -7,19 +7,31 @@
         <button class=" btn btn-light" @click="isChangeDisplay = !isChangeDisplay">
           {{ changeBtn }}に切り替え
         </button>
-      </div>
-      <div class="mt-2 h-75">
-        <div v-show="!isExpandSlide">
-          <InputArea class="float-left col-6" @updateText="updateText" @scrollSync="scrollSync" />
+        <div v-if="fileText">
+          <button class=" btn btn-light" @click="overwriteText()">
+            上書き保存
+          </button>
         </div>
+        <button class=" btn btn-light" @click="saveText()">
+          保存
+        </button>
+        <button class=" btn btn-light" @click="initText()">
+          新規
+        </button>
+      </div>
+      <div class="mt-2 h-75" @keydown.ctrl.83="overwriteText()">
+        <InputArea
+         class="float-left col-6"
+         :status="status" 
+         :fileText="fileText"
+         @updateText="updateText"
+         @scrollSync="scrollSync" 
+        />
         <div v-show="!isChangeDisplay">
           <PreviewArea class="float-right col-6" :markdownText="textData" :scrTop="scrTop" />
         </div>
         <div v-show="isChangeDisplay">
-          <MarkdownSlide 
-            :class="{'float-right col-6':!isExpandSlide}" 
-            :markdownText="textData"
-          />
+          <MarkdownSlide class="float-right col-6" :markdownText="textData" />
         </div>
       </div>
     </main>
@@ -42,28 +54,50 @@ export default {
     return {
       textData: '',
       scrTop: 0,
-      isChangeDisplay: false,
-      isExpandSlide: false
+      isChangeDisplay: false
     }
   },
   computed: {
+    // ボタンのテキストを状態に合わせて変更
     changeBtn () {
       if (this.isChangeDisplay) {
         return 'プレビュー'
       } else {
         return 'スライド'
       }
+    },
+    // vuexにfileがないか確認(あればfile画面からの遷移)
+    fileText () {
+      return this.$store.getters.mdText
+    },
+    status () {
+      return this.$store.getters.status
     }
   },
   methods: {
+    // 入力欄からのデータ通知
+    // 入力内容
     updateText (updateText) {
       this.textData = updateText
     },
-    expandSlide (isExpandSlide) {
-      this.isExpandSlide = isExpandSlide
-    },
+    // スクロールバーの高さ
     scrollSync (scrTop) {
       this.scrTop = scrTop
+    },
+    // 初期化
+    initText () {
+      this.textData = ''
+      this.$store.dispatch('initFile')
+    },
+    // 新規保存
+    saveText () {
+      if (this.textData === '') return
+      this.$store.dispatch('saveFile', this.textData)
+    },
+    // 上書き保存
+    overwriteText () {
+      if (this.textData === '') return
+      this.$store.dispatch('overwriteFile', this.textData)
     }
   }
 }
