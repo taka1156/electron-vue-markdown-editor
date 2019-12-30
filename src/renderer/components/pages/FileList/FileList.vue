@@ -2,13 +2,13 @@
     <div class="FileList">
       <h1>File</h1>
       <hr />
+      <h2>FileList:[{{ folderPath }}]</h2>
+      <div class="d-flex flex-row-reverse">
+        <button class=" btn btn-light" @click="selectFolder()">
+          フォルダ参照
+        </button>
+      </div>
       <div v-if="isDisplay">
-        <h2>FileList:[{{ folderPath }}]</h2>
-        <div class="d-flex flex-row-reverse">
-          <button class=" btn btn-light" @click="selectFolder()">
-            フォルダ参照
-          </button>
-        </div>
         <div class="list-group" v-for="(file, index) in fileList" :key="index">
           <section 
           @click="selectFile(index)" 
@@ -29,6 +29,9 @@
 <script>
 export default {
   name: 'FileList',
+  mounted () {
+    this.$store.dispatch('readFileList')
+  },
   computed: {
     // vuexからフォルダパスを取得
     folderPath () {
