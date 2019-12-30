@@ -4,7 +4,7 @@
         <hr />
 
         <p>
-            electronとvueで作成されたマークダウンエディターです
+          electronとvueで作成されたマークダウンエディターです
         </p>
 
         <h2>&lt;主な機能&gt;</h2>
@@ -25,37 +25,8 @@
                 <code>```</code>や<code>***</code>を区切りとして、一枚のスライドを構成します。<br>
                 また、スライドの<code>「」</code>ボタンを押すことでフルスクリーンにすることもできます
             </p>
-            <table class="mt-4 col-8 table table-bordered" >
-                <thead class="thead-light">
-                    <tr>
-                    <th>ショートカットキー</th>
-                    <th>機能</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <th>shift + p</th>
-                        <th>スライドのいずれかのUIに触った状態で押すと1つ前に戻ります</th>
-                    </tr>
-                    <tr>
-                        <th>shift + n</th>
-                        <th>スライドのいずれかのUIに触った状態で押すと1つ後に進みます</th>
-                    </tr>
-                    <tr>
-                        <th>フルスクリーン状態でesc</th>
-                        <th>フルスクリーンの解除</th>
-                    </tr>
-                    <tr>
-                        <th>入力欄をクリックした状態で<br>shift + h</th>
-                        <th>入力欄にmarkdownのチートシートが上書きされます</th>
-                    </tr>
-                    <tr>
-                        <th>入力欄をクリックした状態で<br>shift + s</th>
-                        <th>上書き保存されます。(一度保存したことがあるもの)</th>
-                    </tr>
-                </tbody>
-            </table>
         </ul>
+        <div class="border" />
         </section>
 
          <section class="mt-2">
@@ -63,11 +34,20 @@
             <img src="~@/assets/navi-img/folder.svg" class="icon">
             File:
         </h2>
-            <p class="ml-5">
-            フォルダに保存したファイルを一覧で表示します。<br>
-            デフォルトではOS固有のドキュメントフォルダに<strong>md</strong>という<br>
-            フォルダを作成しその中に保存します。
-            </p>
+            <div class="ml-5">
+                <p>
+                    フォルダに保存したファイルを一覧で表示します。<br>
+                    デフォルトではOS固有のドキュメントフォルダに<strong>md</strong>という
+                    フォルダを作成しその中に保存します。
+                </p>
+                <p>
+                <strong>
+                    始めてこのアプリを開いた場合、mdフォルダの中に、CheetSheet.md<br>
+                    というファイルが作られます。(マークダウン及びスライドの見本として使ってください)
+                </strong>
+                </p>
+            </div>
+        <div class="border" />
         </section>
 
          <section class="mt-2">
@@ -75,22 +55,53 @@
             <img src="~@/assets/navi-img/settings.svg" class="icon">
             Setting:
         </h2>
-        <p>
-
+        <p class="ml-5">
+            開発中
         </p>
+        <div class="border" />
         </section>
+
+        <table class="mt-4 ml-5 col-8 table table-bordered" >
+            <thead class="thead-light">
+                <tr>
+                <th>ショートカットキー</th>
+                <th>機能</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th>shift + p</th>
+                    <th>スライドのいずれかのUIに触った状態で押すと1つ前に戻ります</th>
+                </tr>
+                <tr>
+                    <th>shift + n</th>
+                    <th>スライドのいずれかのUIに触った状態で押すと1つ後に進みます</th>
+                </tr>
+                <tr>
+                    <th>フルスクリーン状態でesc</th>
+                    <th>フルスクリーンの解除</th>
+                </tr>
+                <tr>
+                    <th>入力欄をクリックした状態で<br>shift + s</th>
+                    <th>保存処理(新規ファイルの場合は、保存場所を指定するウィンドウが出ます。)</th>
+                </tr>
+            </tbody>
+        </table>
     </div>
 </template>
 
 <script>
 export default {
-  name: 'Help'
+  name: 'Help',
+  mounted () {
+    this.$store.dispatch('initFolder')
+  }
 }
 </script>
 
 <style scoped>
   .icon {
-      height: 30px;
-      width: 30px;
+      height: 60px;
+      width: 60px;
   }
 </style>
