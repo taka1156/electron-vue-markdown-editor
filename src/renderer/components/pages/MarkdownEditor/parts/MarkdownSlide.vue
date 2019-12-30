@@ -36,22 +36,6 @@
 import markdownItVue from 'markdown-it-vue'
 import 'markdown-it-vue/dist/markdown-it-vue.css'
 
-function ElementRequestFullscreen (element) {
-  if (element.webkitRequestFullScreen) {
-    element.webkitRequestFullScreen()
-    return true
-  }
-  return false
-}
-
-function DocumentExitFullscreen (document) {
-  if (document.webkitExitFullscreen) {
-    document.webkitExitFullscreen()
-    return true
-  }
-  return false
-}
-
 export default {
   name: 'MarkdownSlide',
   components: {
@@ -80,7 +64,7 @@ export default {
   },
   watch: {
     markdownText () {
-      this.makeSilde()
+      this.slideData = this.makeSilde()
     }
   },
   computed: {
@@ -94,21 +78,25 @@ export default {
     }
   },
   methods: {
+    // ページネーション
     prevPage () {
       this.page = Math.max(this.page - 1, 0)
     },
     nextPage () {
       this.page = Math.min(this.page + 1, this.maxPage - 1)
     },
+    // スライドの生成
     makeSilde () {
-      this.slideData = this.markdownText.split(/^---|\*\*\*$/gm)
+      if (this.markdownText === '') return null
+      return this.markdownText.split(/^---|\*\*\*$/gm)
     },
+    // スライドのフルスクリーン化
     expandSlide () {
       this.isExpandSlide = !this.isExpandSlide
       if (this.isExpandSlide) {
-        ElementRequestFullscreen(document.getElementById('expandSlide'))
+        document.getElementById('expandSlide').webkitRequestFullScreen()
       } else {
-        DocumentExitFullscreen(document)
+        document.webkitExitFullscreen()
       }
     }
   }

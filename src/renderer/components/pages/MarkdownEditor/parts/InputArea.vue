@@ -4,25 +4,26 @@
         <textarea 
           id="input"
           class="input-area form-control"
-          @keydown.shift.72="setCheetSheet()"
           v-model="inputData"
         ></textarea>
     </div>
 </template>
 
 <script>
-import CheetSheet from '@/components/SmapleMarkdown/CheetSheet.js'
-
 export default {
   name: 'InputArea',
   props: {
-    fileText: {
-      type: String,
-      default: ''
+    isInit: {
+      type: Boolean,
+      default: false
     },
     status: {
       type: Boolean,
       default: false
+    },
+    fileText: {
+      type: String,
+      default: ''
     }
   },
   data () {
@@ -54,16 +55,17 @@ export default {
     // 入力が変化したらプレビューに反映
     inputData () {
       this.$emit('updateText', this.inputData)
+    },
+    // 新規の書き込み(初期化)
+    isInit () {
+      this.inputData = ''
+      this.$emit('initText', false)
     }
   },
   methods: {
     // 親コンポーネントに現在のスクロールバーの高さを通知
     handleScroll (posi) {
       this.$emit('scrollSync', posi)
-    },
-    // マークダウン記法のサンプル表示
-    setCheetSheet () {
-      this.inputData = CheetSheet
     }
   }
 }
