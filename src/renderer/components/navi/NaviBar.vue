@@ -30,7 +30,7 @@
                     <div class="d-flex flex-column">
                         <div class="mx-auto">
                             <img src="~@/assets/navi-img/folder.svg">
-                            <p class="mx-auto text-dark">file</p>
+                            <p class="mx-auto text-dark">File</p>
                         </div>
                     </div>
                 </router-link>

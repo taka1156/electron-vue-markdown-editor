@@ -15,17 +15,19 @@
         <button class=" btn btn-light" @click="saveText()">
           保存
         </button>
-        <button class=" btn btn-light" @click="initText()">
+        <button class=" btn btn-light" @click="initText(true)">
           新規
         </button>
       </div>
       <div class="mt-2 h-75" @keydown.ctrl.83="overwriteText()">
         <InputArea
          class="float-left col-6"
-         :status="status" 
+         :isInit="isInit"
+         :status="status"
          :fileText="fileText"
+         @initText="initText"
          @updateText="updateText"
-         @scrollSync="scrollSync" 
+         @scrollSync="scrollSync"
         />
         <div v-show="!isChangeDisplay">
           <PreviewArea class="float-right col-6" :markdownText="textData" :scrTop="scrTop" />
@@ -54,7 +56,8 @@ export default {
     return {
       textData: '',
       scrTop: 0,
-      isChangeDisplay: false
+      isChangeDisplay: false,
+      isInit: false
     }
   },
   computed: {
@@ -75,28 +78,34 @@ export default {
     }
   },
   methods: {
-    // 入力欄からのデータ通知
-    // 入力内容
-    updateText (updateText) {
-      this.textData = updateText
-    },
     // スクロールバーの高さ
     scrollSync (scrTop) {
       this.scrTop = scrTop
     },
     // 初期化
-    initText () {
-      this.textData = ''
-      this.$store.dispatch('initFile')
+    initText (status) {
+      this.isInit = status
+      if (status) this.$store.dispatch('initFile')
+    },
+    // 入力欄からのデータ通知
+    // 入力内容
+    updateText (updateText) {
+      this.textData = updateText
     },
     // 新規保存
     saveText () {
-      if (this.textData === '') return
+      if (this.textData === '') {
+        alert('テキストが空欄の状態での保存はできません')
+        return
+      }
       this.$store.dispatch('saveFile', this.textData)
     },
     // 上書き保存
     overwriteText () {
-      if (this.textData === '') return
+      if (this.textData === '') {
+        alert('テキストが空欄の状態での保存はできません')
+        return
+      }
       this.$store.dispatch('overwriteFile', this.textData)
     }
   }
