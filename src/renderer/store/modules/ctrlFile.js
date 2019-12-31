@@ -83,17 +83,23 @@ const actions = {
   readFileList (context) {
     // ファイルパスの設定
     const PATH = context.state.folderPath
-    // フォルダの存在を確認してなければ選択画面を呼ぶ
+    //
     fs.access(PATH, function (err) {
       if (err) {
         if (err.code === 'ENOENT') {
-          alert('フォルダが存在しません。')
+          context.commit('setFileList', [])
+          context.commit('setFolderPath', '')
         }
       }
     })
+
     // ファイル一覧の取得
     fs.readdir(PATH, function (err, files) {
-      if (err) alert(err)
+      if (err) {
+        alert('フォルダを選んでください')
+        context.dispatch('selectFolder')
+        return
+      }
       let fileList = files.filter(function (file) {
         return /.*\.md$/.test(file)
       })
@@ -149,6 +155,7 @@ const actions = {
     if (context.state.filePath === '') {
       // ファイルパスが存在しなければ新規保存
       context.dispatch('saveFile', textData)
+      return
     }
     const FILE_PATH = context.state.filePath
     if (FILE_PATH) {
