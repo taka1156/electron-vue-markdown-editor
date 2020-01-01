@@ -19,7 +19,7 @@
           新規
         </button>
       </div>
-      <div class="mt-2 h-75" @keydown.ctrl.83="overwriteText()">
+      <div class="mt-2 h-75" @keydown.ctrl.83="shortcutSave()">
         <InputArea
          class="float-left col-6"
          :isInit="isInit"
@@ -30,10 +30,10 @@
          @scrollSync="scrollSync"
         />
         <div v-show="!isChangeDisplay">
-          <PreviewArea class="float-right col-6" :markdownText="textData" :scrTop="scrTop" />
+          <PreviewArea class="float-right col-6" :markdownText="fileText" :scrTop="scrTop" />
         </div>
         <div v-show="isChangeDisplay">
-          <MarkdownSlide class="float-right col-6" :markdownText="textData" />
+          <MarkdownSlide class="float-right col-6" :markdownText="fileText" />
         </div>
       </div>
     </main>
@@ -54,7 +54,6 @@ export default {
   },
   data () {
     return {
-      textData: '',
       scrTop: 0,
       isChangeDisplay: false,
       isInit: false
@@ -69,10 +68,11 @@ export default {
         return 'スライド'
       }
     },
-    // vuexにfileがないか確認(あればfile画面からの遷移)
+    // vuexからテキスト情報を取得
     fileText () {
       return this.$store.getters.mdText
     },
+    // vuexにfileがあるか状態確認
     status () {
       return this.$store.getters.status
     }
@@ -87,26 +87,32 @@ export default {
       this.isInit = status
       if (status) this.$store.dispatch('initFile')
     },
-    // 入力欄からのデータ通知
-    // 入力内容
+    // 入力欄からのvuexにデータを渡す
     updateText (updateText) {
-      this.textData = updateText
+      this.$store.commit('setmdText', updateText)
+    },
+    shortcutSave () {
+      if (this.status) {
+        this.overwriteText()
+      } else {
+        this.saveText()
+      }
     },
     // 新規保存
     saveText () {
-      if (this.textData === '') {
+      if (this.fileText === '') {
         alert('テキストが空欄の状態での保存はできません')
         return
       }
-      this.$store.dispatch('saveFile', this.textData)
+      this.$store.dispatch('saveFile')
     },
     // 上書き保存
     overwriteText () {
-      if (this.textData === '') {
+      if (this.fileText === '') {
         alert('テキストが空欄の状態での保存はできません')
         return
       }
-      this.$store.dispatch('overwriteFile', this.textData)
+      this.$store.dispatch('overwriteFile')
     }
   }
 }

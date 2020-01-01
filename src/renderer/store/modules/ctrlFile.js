@@ -3,28 +3,30 @@ const { app, dialog } = require('electron').remote
 const fs = require('fs')
 
 const state = {
+  folderPath: `${app.getPath('documents')}\\md`,
   fileList: [],
   status: false, // ファイルが存在するかどうか
   mdText: '',
-  filePath: '',
-  folderPath: `${app.getPath('documents')}\\md`
+  filePath: ''
 }
 
 const getters = {
+  // フォルダ情報
   folderPath (state) {
     return state.folderPath
   },
   fileList (state) {
     return state.fileList
   },
+  // ファイルの情報
+  status (state) {
+    return state.status
+  },
   mdText (state) {
     return state.mdText
   },
   filePath (state) {
     return state.filePath
-  },
-  status (state) {
-    return state.status
   }
 }
 
@@ -76,19 +78,26 @@ const actions = {
       properties: ['openDirectory']
     })
     if (FOLDER_PATH) {
-      context.commit('setFolderPath', FOLDER_PATH[0])
-      context.dispatch('readFileList')
+      if (FOLDER_PATH[0] !== context.getters.folderPath) {
+        context.commit('setFolderPath', FOLDER_PATH[0])
+        context.dispatch('initFile')
+        context.dispatch('readFileList')
+      } else {
+        alert('同じフォルダです')
+      }
     }
   },
   readFileList (context) {
     // ファイルパスの設定
-    const PATH = context.state.folderPath
-    //
+    const PATH = context.getters.folderPath
+    // フォルダ存在しなければ初期化
     fs.access(PATH, function (err) {
       if (err) {
         if (err.code === 'ENOENT') {
           context.commit('setFileList', [])
           context.commit('setFolderPath', '')
+          context.dispatch('initFile')
+          alert('フォルダが存在しません')
         }
       }
     })
@@ -107,8 +116,8 @@ const actions = {
     })
   },
   readFile (context, index) {
-    const FILE_PATH = `${context.state.folderPath}\\${context.state.fileList[index]}`
-    if (context.state.filePath === FILE_PATH) {
+    const FILE_PATH = `${context.getters.folderPath}\\${context.getters.fileList[index]}`
+    if (context.getters.filePath === FILE_PATH) {
       alert('すでに開いています。')
       return
     }
@@ -143,23 +152,16 @@ const actions = {
       ]
     })
     if (FILE_PATH) {
-      fs.writeFileSync(FILE_PATH, textData)
-      context.commit('setmdText', textData)
+      fs.writeFileSync(FILE_PATH, context.getters.mdText)
       context.commit('setFilePath', FILE_PATH)
       context.commit('changeStatus', true)
       alert('保存しました。')
     }
   },
-  overwriteFile (context, textData) {
-    // 上書き保存
-    if (context.state.filePath === '') {
-      // ファイルパスが存在しなければ新規保存
-      context.dispatch('saveFile', textData)
-      return
-    }
-    const FILE_PATH = context.state.filePath
+  overwriteFile (context) {
+    const FILE_PATH = context.getters.filePath
     if (FILE_PATH) {
-      fs.writeFileSync(FILE_PATH, textData)
+      fs.writeFileSync(FILE_PATH, context.getters.mdText)
       alert('保存しました。')
     }
   }
