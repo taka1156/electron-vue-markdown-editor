@@ -215,7 +215,7 @@ __hoge__
 | C#            | JavaScript    |
 | Swift         | TypeScript    |
 
-\`\`\`markdownit
+\`\`\`markdown
 | コンパイル言語 | スクリプト言語| 
 |:-------------:|:-------------:|
 | C/C++         | Ruby          |
