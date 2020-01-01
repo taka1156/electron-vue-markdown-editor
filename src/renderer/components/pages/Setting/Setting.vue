@@ -46,9 +46,13 @@ export default {
   },
   mounted () {
     // 現在の設定を反映
-    this.userSetting.autoSave = this.isAutoSave
-    this.userSetting.setName = this.isSetName
-    this.userSetting.setCover = this.isSetCover
+    let userSetting = localStorage.getItem('userSetting');
+    if (userSetting) {
+      const setting = JSON.parse(userSetting)
+      this.userSetting.autoSave = setting.autoSave
+      this.userSetting.setName = setting.setName
+      this.userSetting.setCover = setting.setCover
+    }
   },
   methods: {
     saveSetting () {
