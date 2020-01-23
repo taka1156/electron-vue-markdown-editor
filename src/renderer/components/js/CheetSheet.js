@@ -1,4 +1,7 @@
 export default `
+title:{初めてのマークダウン}
+name:{by taka}
+
 ## 見出しタグ
 
 # これはH1タグです

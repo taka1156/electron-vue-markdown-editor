@@ -7,7 +7,7 @@
         <button class=" btn btn-light" @click="isChangeDisplay = !isChangeDisplay">
           {{ changeBtn }}に切り替え
         </button>
-        <div v-if="fileText">
+        <div v-if="status">
           <button class=" btn btn-light" @click="overwriteText()">
             上書き保存
           </button>
@@ -23,7 +23,6 @@
         <InputArea
          class="float-left col-6"
          :isInit="isInit"
-         :status="status"
          :fileText="fileText"
          @initText="initText"
          @updateText="updateText"
@@ -83,9 +82,8 @@ export default {
       this.scrTop = scrTop
     },
     // 初期化
-    initText (status) {
-      this.isInit = status
-      if (status) this.$store.dispatch('initFile')
+    initText () {
+      this.$store.dispatch('initFile')
     },
     // 入力欄からのvuexにデータを渡す
     updateText (updateText) {
