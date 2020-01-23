@@ -6,19 +6,8 @@
         <fieldset class="ml-4 col-11 border">
           <legend>エディタ設定</legend>
           <div class="custom-control custom-switch">
-            <input type="checkbox" v-model="isAutoSave" class="custom-control-input" id="autoSave">
+            <input type="checkbox" v-model="userSetting.isAutoSave" class="custom-control-input" id="autoSave">
             <label class="custom-control-label" for="autoSave">オートセーブ</label>
-          </div>
-        </fieldset>
-        <fieldset class="ml-4 col-11 border">
-          <legend>スライド設定</legend>
-          <div class="custom-control custom-switch">
-            <input type="checkbox" v-model="isSetName" class="custom-control-input" id="setName">
-            <label class="custom-control-label" for="setName">ユーザーネーム</label>
-          </div>
-          <div class="custom-control custom-switch">
-            <input type="checkbox" v-model="isSetCover" class="custom-control-input" id="setCover">
-            <label class="custom-control-label" for="setCover">表紙設定</label>
           </div>
         </fieldset>
         <div class="mx-auto mt-3 col-8 d-flex justify-content-between">
@@ -34,37 +23,26 @@ export default {
   name: 'Setting',
   data () {
     return {
-      isAutoSave: false,
-      isSetName: false,
-      isSetCover: false,
       userSetting: {
-        autoSave: null,
-        setName: null,
-        setCover: null
+        isAutoSave: false
       }
     }
   },
   mounted () {
     // 現在の設定を反映
-    let userSetting = localStorage.getItem('userSetting');
-    if (userSetting) {
-      const setting = JSON.parse(userSetting)
-      this.userSetting.autoSave = setting.autoSave
-      this.userSetting.setName = setting.setName
-      this.userSetting.setCover = setting.setCover
+    const SETTING = localStorage.getItem('userSetting')
+    if (SETTING) {
+      const SETTING_JSON = JSON.parse(SETTING)
+      this.userSetting.isAutoSave = SETTING_JSON.isAutoSave
     }
   },
   methods: {
     saveSetting () {
-      this.userSetting.AutoSave = this.isAutoSave
-      this.userSetting.SetName = this.isSetName
-      this.userSetting.setCover = this.isSetCover
+      alert(this.userSetting.isAutoSave)
       // localStorage.setItem('userSetting', JSON.stringify(this.userSetting))
     },
     resetSetting () {
-      this.isAutoSave = false
-      this.isSetName = false
-      this.isSetCover = false
+      this.userSetting.isAutoSave = false
       this.saveSetting()
     }
   }

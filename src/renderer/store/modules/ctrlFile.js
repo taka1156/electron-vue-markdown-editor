@@ -1,9 +1,9 @@
-import CheetSheet from '@/components/SmapleMarkdown/CheetSheet.js'
+import CheetSheet from '@/components/js/CheetSheet.js'
 const { app, dialog } = require('electron').remote
 const fs = require('fs')
 
 const state = {
-  folderPath: `${app.getPath('documents')}\\md`,
+  folderPath: `${app.getPath('documents')}/md`,
   fileList: [],
   status: false, // ファイルが存在するかどうか
   mdText: '',
@@ -54,8 +54,8 @@ const mutations = {
 
 const actions = {
   initFolder () {
-    const FOLDER_PATH = `${app.getPath('documents')}\\md`
-    const FILE_PATH = `${FOLDER_PATH}\\CheetSheet.md`
+    const FOLDER_PATH = `${app.getPath('documents')}/md`
+    const FILE_PATH = `${FOLDER_PATH}/CheetSheet.md`
     // 初期ファイルの生成
     fs.access(FOLDER_PATH, function (err) {
       if (err) {
@@ -116,7 +116,7 @@ const actions = {
     })
   },
   readFile (context, index) {
-    const FILE_PATH = `${context.getters.folderPath}\\${context.getters.fileList[index]}`
+    const FILE_PATH = `${context.getters.folderPath}/${context.getters.fileList[index]}`
     if (context.getters.filePath === FILE_PATH) {
       alert('すでに開いています。')
       return
@@ -140,7 +140,7 @@ const actions = {
   },
   saveFile (context, textData) {
     // 新規保存
-    const DEFAULT = `${app.getPath('documents')}\\md`
+    const DEFAULT = `${app.getPath('documents')}/md`
     const FILE_PATH = dialog.showSaveDialog({
       title: 'Save as',
       defaultPath: DEFAULT,
