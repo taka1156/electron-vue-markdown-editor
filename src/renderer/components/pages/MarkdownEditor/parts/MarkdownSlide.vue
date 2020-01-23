@@ -35,7 +35,7 @@
 <script>
 import markdownItVue from 'markdown-it-vue'
 import 'markdown-it-vue/dist/markdown-it-vue.css'
-
+import genSlide from '@/components/js/GenSlide.js'
 export default {
   name: 'MarkdownSlide',
   components: {
@@ -62,6 +62,9 @@ export default {
       }
     }
   },
+  mounted () {
+    this.slideData = this.makeSilde()
+  },
   watch: {
     markdownText () {
       this.slideData = this.makeSilde()
@@ -80,15 +83,18 @@ export default {
   methods: {
     // ページネーション
     prevPage () {
+      if (this.slideData === null) return
       this.page = Math.max(this.page - 1, 0)
     },
     nextPage () {
+      if (this.slideData === null) return
       this.page = Math.min(this.page + 1, this.maxPage - 1)
     },
     // スライドの生成
     makeSilde () {
       if (this.markdownText === '') return null
-      return this.markdownText.split(/^---|\*\*\*$/gm)
+      const SLIDE_DATA = genSlide.generateSlide(this.markdownText)
+      return SLIDE_DATA.split(/^---|\*\*\*$/gm)
     },
     // スライドのフルスクリーン化
     expandSlide () {
@@ -109,18 +115,15 @@ export default {
   background-color:white; 
   overflow-y: scroll;
 }
-
 .slide-navi-btn{
   appearance: none;
   font-size: 10px;
   border-radius: 10px; 
   background-color: cornflowerblue
 }
-
 input[type=range]::-webkit-slider-thumb {
   background-color: cornflowerblue
 }
-
 .expand-slide{
   height: 90vh;
   width: 100vw;

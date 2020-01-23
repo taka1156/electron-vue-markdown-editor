@@ -17,10 +17,6 @@ export default {
       type: Boolean,
       default: false
     },
-    status: {
-      type: Boolean,
-      default: false
-    },
     fileText: {
       type: String,
       default: ''
@@ -33,7 +29,7 @@ export default {
   },
   mounted () {
     // ページを切り替えてもvuexにファイルがあれば保持
-    if (this.status) this.inputData = this.fileText
+    this.inputData = this.fileText
     // 入力欄とプレビューのスクロールバーの同期
     let input = document.getElementById('input')
     // スクロールのイベント
@@ -48,18 +44,13 @@ export default {
     }
   },
   watch: {
-    // フォルダの変更監視
+    // フォルダの変更監視(初期化など)
     fileText () {
       this.inputData = this.fileText
     },
     // 入力が変化したらプレビューに反映
     inputData () {
       this.$emit('updateText', this.inputData)
-    },
-    // 新規の書き込み(初期化)
-    isInit () {
-      this.inputData = ''
-      this.$emit('initText', false)
     }
   },
   methods: {

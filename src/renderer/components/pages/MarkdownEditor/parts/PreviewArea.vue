@@ -4,7 +4,7 @@
     <markdown-it-vue 
       id="preview"
       class="md-markdown preview-area border"
-      :content="markdownText"
+      :content="previewText"
       :options="options"
     />
   </div>
@@ -38,6 +38,11 @@ export default {
           linkify: true
         }
       }
+    }
+  },
+  computed: {
+    previewText () {
+      return this.markdownText.replace(/(title:{(.*?)}|name:{(.*?)})/g, '')
     }
   },
   watch: {
