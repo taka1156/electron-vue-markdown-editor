@@ -7,7 +7,9 @@ const chalk = require('chalk')
 const del = require('del')
 const { spawn } = require('child_process')
 const webpack = require('webpack')
-const Multispinner = require('multispinner')
+// 参照:(https://github.com/codekirei/node-multispinner/pull/5#issuecomment-524008337)
+//const Multispinner = require('multispinner')
+const Listr = require('listr')
 
 
 const mainConfig = require('./webpack.main.config')
@@ -29,19 +31,20 @@ function clean () {
   process.exit()
 }
 
-function build () {
+async function build () {
   greeting()
 
   del.sync(['dist/electron/*', '!.gitkeep'])
 
-  const tasks = ['main', 'renderer']
+  /*const tasks = ['main', 'renderer']
   const m = new Multispinner(tasks, {
     preText: 'building',
     postText: 'process'
-  })
+  })*/
 
   let results = ''
 
+  /*
   m.on('success', () => {
     process.stdout.write('\x1B[2J\x1B[0f')
     console.log(`\n\n${results}`)
@@ -68,7 +71,7 @@ function build () {
     console.error(`\n${err}\n`)
     process.exit(1)
   })
-}
+}*/
 
 function pack (config) {
   return new Promise((resolve, reject) => {
@@ -98,6 +101,51 @@ function pack (config) {
   })
 }
 
+  const tasks = new Listr(
+    [
+      {
+        title: 'building master process',
+        task: async () => {
+          await pack(mainConfig)
+            .then(result => {
+              results += result + '\n\n'
+            })
+            .catch(err => {
+              console.log(`\n  ${errorLog}failed to build main process`)
+              console.error(`\n${err}\n`)
+            })
+        }
+      },
+      {
+        title: 'building renderer process',
+        task: async () => {
+          await pack(rendererConfig)
+            .then(result => {
+              results += result + '\n\n'
+            })
+            .catch(err => {
+              console.log(`\n  ${errorLog}failed to build renderer process`)
+              console.error(`\n${err}\n`)
+            })
+        }
+      }
+    ],
+    { concurrent: 2 }
+  )
+
+  await tasks
+    .run()
+    .then(() => {
+      process.stdout.write('\x1B[2J\x1B[0f')
+      console.log(`\n\n${results}`)
+      console.log(`${okayLog}take it away ${chalk.yellow('`electron-builder`')}\n`)
+      process.exit()
+    })
+    .catch(err => {
+      process.exit(1)
+    })
+}
+
 function web () {
   del.sync(['dist/web/*', '!.gitkeep'])
   webConfig.mode = 'production'
@@ -108,7 +156,6 @@ function web () {
       chunks: false,
       colors: true
     }))
-
     process.exit()
   })
 }
