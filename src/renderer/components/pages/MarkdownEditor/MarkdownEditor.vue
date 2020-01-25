@@ -22,6 +22,7 @@
       <div class="mt-2 h-75" @keydown.ctrl.83="shortcutSave()">
         <InputArea
          class="float-left col-6"
+         id="inputArea"
          :isInit="isInit"
          :fileText="fileText"
          @initText="initText"
@@ -44,6 +45,8 @@ import InputArea from './parts/InputArea'
 import PreviewArea from './parts/PreviewArea'
 import MarkdownSlide from './parts/MarkdownSlide'
 
+let timer
+
 export default {
   name: 'editor',
   components: {
@@ -58,6 +61,9 @@ export default {
       isInit: false
     }
   },
+  mounted () {
+    this.$store.dispatch('readSetting')
+  },
   computed: {
     // ボタンのテキストを状態に合わせて変更
     changeBtn () {
@@ -71,9 +77,16 @@ export default {
     fileText () {
       return this.$store.getters.mdText
     },
+    // 保存前のテキスト
+    preText () {
+      return this.$store.getters.preText
+    },
     // vuexにfileがあるか状態確認
     status () {
       return this.$store.getters.status
+    },
+    userSetting () {
+      return this.$store.getters.userSetting
     }
   },
   methods: {
@@ -88,6 +101,10 @@ export default {
     // 入力欄からのvuexにデータを渡す
     updateText (updateText) {
       this.$store.commit('setmdText', updateText)
+      if (this.userSetting.isAutoSave) {
+        document.getElementById('inputArea').addEventListener('mousedown', this.autoSave())
+        document.getElementById('inputArea').addEventListener('keypress', this.autoSave())
+      }
     },
     shortcutSave () {
       if (this.status) {
@@ -95,6 +112,19 @@ export default {
       } else {
         this.saveText()
       }
+    },
+    // オートセーブ
+    autoSave () {
+      clearTimeout(timer)
+      if (this.status && this.fileText !== this.preText) {
+        this.restartTimer()
+      }
+    },
+    restartTimer () {
+      clearTimeout(timer)
+      timer = setTimeout(() => {
+        this.overwriteText()
+      }, this.userSetting.saveInterval)
     },
     // 新規保存
     saveText () {
