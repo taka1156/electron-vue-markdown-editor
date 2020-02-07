@@ -27,8 +27,6 @@
 </template>
 
 <script>
-const cloneDeep = require('lodash/cloneDeep')
-
 export default {
   name: 'Setting',
   data () {
@@ -41,13 +39,20 @@ export default {
   },
   mounted () {
     this.$store.dispatch('readSetting')
-    // シャローコピーだとエラーが出る
-    this.userSetting = cloneDeep(this.$store.getters.userSetting)
+    if (this.initSetting) {
+      this.userSetting.isAutoSave = this.initSetting.isAutoSave
+      this.userSetting.saveInterval = this.initSetting.saveInterval
+    }
+  },
+  computed: {
+    initSetting () {
+      return this.$store.getters.userSetting
+    }
   },
   methods: {
     saveSetting () {
-      alert(`設定を保存しました。`)
       localStorage.setItem('userSetting', JSON.stringify(this.userSetting))
+      alert(`設定を保存しました。`)
     },
     resetSetting () {
       this.userSetting.isAutoSave = false

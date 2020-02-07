@@ -16,7 +16,7 @@
         <button class=" btn btn-light" @click="initText()">
           新規
         </button>
-        <div class="m-3">{{ `オートセーブ:${userSetting.isAutoSave ? '有効':'無効'}` }}</div>
+        <div class="m-3">{{ `オートセーブ:${ isAutoSave ? '有効':'無効'}` }}</div>
       </div>
       <div class="mt-2 h-75" @keydown.ctrl.83="shortcutSave()">
         <InputArea
@@ -83,6 +83,10 @@ export default {
     },
     userSetting () {
       return this.$store.getters.userSetting
+    },
+    isAutoSave () {
+      if (this.userSetting.isAutoSave === null) return false
+      return this.userSetting.isAutoSave
     }
   },
   methods: {
@@ -97,7 +101,7 @@ export default {
     // 入力欄からのvuexにデータを渡す
     updateText (updateText) {
       this.$store.commit('setmdText', updateText)
-      if (this.userSetting.isAutoSave) {
+      if (this.isAutoSave) {
         document.getElementById('inputArea').addEventListener('keypress', this.autoSave())
       }
     },
