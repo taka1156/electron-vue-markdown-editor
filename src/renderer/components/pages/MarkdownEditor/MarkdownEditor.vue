@@ -16,6 +16,7 @@
         <button class=" btn btn-light" @click="initText(true)">
           新規
         </button>
+        <div class="m-3">{{ `オートセーブ:${userSetting.isAutoSave ? '有効':'無効'}` }}</div>
       </div>
       <div class="mt-2 h-75" @keydown.ctrl.83="shortcutSave()">
         <InputArea
