@@ -6,7 +6,8 @@ const state = {
   folderPath: `${app.getPath('documents')}/md`,
   fileList: [],
   status: false, // ファイルが存在するかどうか
-  mdText: '',
+  mdText: '', // 編集中のテキスト
+  preText: '', // 保存済みテキスト
   filePath: ''
 }
 
@@ -25,6 +26,9 @@ const getters = {
   mdText (state) {
     return state.mdText
   },
+  preText (state) {
+    return state.preText
+  },
   filePath (state) {
     return state.filePath
   }
@@ -38,6 +42,10 @@ const mutations = {
   // ファイルのテキスト情報を取得
   setmdText (state, mdText) {
     state.mdText = mdText
+  },
+  // 最後に保存したテキストの内容
+  setpreText (state, preText) {
+    state.preText = preText
   },
   // フォルダのパスを取得
   setFolderPath (state, folderPath) {
@@ -127,6 +135,7 @@ const actions = {
         alert(error)
       } else {
         context.commit('setmdText', text)
+        context.commit('setpreText', text)
         context.commit('setFilePath', FILE_PATH)
         context.commit('changeStatus', true)
       }
@@ -135,10 +144,11 @@ const actions = {
   initFile (context) {
     // ファイル情報初期化
     context.commit('setmdText', '')
+    context.commit('setpreText', '')
     context.commit('setFilePath', '')
     context.commit('changeStatus', false)
   },
-  saveFile (context, textData) {
+  saveFile (context) {
     // 新規保存
     const DEFAULT = `${app.getPath('documents')}/md`
     const FILE_PATH = dialog.showSaveDialog({
@@ -155,6 +165,7 @@ const actions = {
       fs.writeFileSync(FILE_PATH, context.getters.mdText)
       context.commit('setFilePath', FILE_PATH)
       context.commit('changeStatus', true)
+      context.commit('setpreText', context.getters.mdText)
       alert('保存しました。')
     }
   },
@@ -162,6 +173,7 @@ const actions = {
     const FILE_PATH = context.getters.filePath
     if (FILE_PATH) {
       fs.writeFileSync(FILE_PATH, context.getters.mdText)
+      context.commit('setpreText', context.getters.mdText)
       alert('保存しました。')
     }
   }
