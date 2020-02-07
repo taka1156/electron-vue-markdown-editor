@@ -27,32 +27,32 @@ export default {
     // ページを切り替えてもvuexにテキストがあれば保持
     this.inputData = this.fileText
     // 入力欄とプレビューのスクロールバーの同期
-    let inputScroll = document.getElementById('input')
+    const INPUT_SCROLL = document.getElementById('input')
     // スクロールのイベント
-    inputScroll.onscroll = (e) => {
-      const HEIGHT = inputScroll.scrollTop
+    INPUT_SCROLL.onscroll = (e) => {
+      const HEIGHT = INPUT_SCROLL.scrollTop
       this.handleScroll(HEIGHT)
     }
     // キー入力のイベント
-    inputScroll.onkeydown = (e) => {
-      const HEIGHT = inputScroll.scrollTop
+    INPUT_SCROLL.onkeydown = (e) => {
+      const HEIGHT = INPUT_SCROLL.scrollTop
       this.handleScroll(HEIGHT)
     }
   },
   watch: {
-    // フォルダの変更監視(初期化など)
+    // vuexのテキスト変更の監視(親コンポーネントから受け取る)
     fileText () {
       this.inputData = this.fileText
     },
     // 入力が変化したらプレビューに反映
     inputData () {
-      this.$emit('updateText', this.inputData)
+      this.$emit('update-text', this.inputData)
     }
   },
   methods: {
     // 親コンポーネントに現在のスクロールバーの高さを通知
-    handleScroll (posi) {
-      this.$emit('scrollSync', posi)
+    handleScroll (position) {
+      this.$emit('scroll-sync', position)
     }
   }
 }

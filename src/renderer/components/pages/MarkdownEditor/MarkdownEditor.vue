@@ -13,7 +13,7 @@
         <button class=" btn btn-light" @click="saveText()">
           保存
         </button>
-        <button class=" btn btn-light" @click="initText(true)">
+        <button class=" btn btn-light" @click="initText()">
           新規
         </button>
         <div class="m-3">{{ `オートセーブ:${userSetting.isAutoSave ? '有効':'無効'}` }}</div>
@@ -23,9 +23,8 @@
          class="float-left col-6"
          id="inputArea"
          :fileText="fileText"
-         @initText="initText"
-         @updateText="updateText"
-         @scrollSync="scrollSync"
+         @update-text="updateText"
+         @scroll-sync="scrollSync"
         />
         <div v-show="!isChangeDisplay">
           <PreviewArea class="float-right col-6" :markdownText="fileText" :scrTop="scrTop" />
@@ -99,7 +98,6 @@ export default {
     updateText (updateText) {
       this.$store.commit('setmdText', updateText)
       if (this.userSetting.isAutoSave) {
-        document.getElementById('inputArea').addEventListener('mousedown', this.autoSave())
         document.getElementById('inputArea').addEventListener('keypress', this.autoSave())
       }
     },
