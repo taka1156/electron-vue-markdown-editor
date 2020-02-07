@@ -13,10 +13,6 @@
 export default {
   name: 'InputArea',
   props: {
-    isInit: {
-      type: Boolean,
-      default: false
-    },
     fileText: {
       type: String,
       default: ''
@@ -28,19 +24,19 @@ export default {
     }
   },
   mounted () {
-    // ページを切り替えてもvuexにファイルがあれば保持
+    // ページを切り替えてもvuexにテキストがあれば保持
     this.inputData = this.fileText
     // 入力欄とプレビューのスクロールバーの同期
-    let input = document.getElementById('input')
+    let inputScroll = document.getElementById('input')
     // スクロールのイベント
-    input.onscroll = (e) => {
-      let posi = input.scrollTop
-      this.handleScroll(posi)
+    inputScroll.onscroll = (e) => {
+      const HEIGHT = inputScroll.scrollTop
+      this.handleScroll(HEIGHT)
     }
     // キー入力のイベント
-    input.onkeydown = (e) => {
-      let posi = input.scrollTop
-      this.handleScroll(posi)
+    inputScroll.onkeydown = (e) => {
+      const HEIGHT = inputScroll.scrollTop
+      this.handleScroll(HEIGHT)
     }
   },
   watch: {

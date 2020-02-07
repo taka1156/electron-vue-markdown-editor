@@ -36,6 +36,7 @@
 import markdownItVue from 'markdown-it-vue'
 import 'markdown-it-vue/dist/markdown-it-vue.css'
 import genSlide from '@/components/js/GenSlide.js'
+
 export default {
   name: 'MarkdownSlide',
   components: {

@@ -7,11 +7,9 @@
         <button class=" btn btn-light" @click="isChangeDisplay = !isChangeDisplay">
           {{ changeBtn }}に切り替え
         </button>
-        <div v-if="status">
-          <button class=" btn btn-light" @click="overwriteText()">
-            上書き保存
-          </button>
-        </div>
+        <button v-if="status" class=" btn btn-light" @click="overwriteText()">
+          上書き保存
+        </button>
         <button class=" btn btn-light" @click="saveText()">
           保存
         </button>
@@ -23,7 +21,6 @@
         <InputArea
          class="float-left col-6"
          id="inputArea"
-         :isInit="isInit"
          :fileText="fileText"
          @initText="initText"
          @updateText="updateText"
@@ -57,8 +54,7 @@ export default {
   data () {
     return {
       scrTop: 0,
-      isChangeDisplay: false,
-      isInit: false
+      isChangeDisplay: false
     }
   },
   mounted () {
