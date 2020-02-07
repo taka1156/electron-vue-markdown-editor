@@ -8,7 +8,7 @@
           フォルダ参照
         </button>
       </div>
-      <div v-if="isDisplay">
+      <div v-if="isDisplayList">
         <div class="list-group" v-for="(file, index) in fileList" :key="index">
           <section 
           @click="selectFile(index)" 
@@ -41,10 +41,9 @@ export default {
     fileList () {
       return this.$store.getters.fileList
     },
-    isDisplay () {
-      // ファイル数が0ならファイルを表示しない
-      if (this.fileList.length === 0) return false
-      return true
+    isDisplayList () {
+      // 拡張子.mdファイルがなければ、リストを表示しない
+      return this.fileList.length !== 0
     }
   },
   methods: {

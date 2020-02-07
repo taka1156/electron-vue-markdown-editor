@@ -47,8 +47,8 @@ export default {
   },
   watch: {
     scrTop () {
-      let preview = document.getElementById('preview')
-      preview.scrollTop = this.scrTop
+      const PREVIEW = document.getElementById('preview')
+      PREVIEW.scrollTop = this.scrTop
     }
   }
 }

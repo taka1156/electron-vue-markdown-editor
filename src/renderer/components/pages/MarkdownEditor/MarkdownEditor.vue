@@ -7,26 +7,24 @@
         <button class=" btn btn-light" @click="isChangeDisplay = !isChangeDisplay">
           {{ changeBtn }}に切り替え
         </button>
-        <div v-if="status">
-          <button class=" btn btn-light" @click="overwriteText()">
-            上書き保存
-          </button>
-        </div>
+        <button v-if="status" class=" btn btn-light" @click="overwriteText()">
+          上書き保存
+        </button>
         <button class=" btn btn-light" @click="saveText()">
           保存
         </button>
-        <button class=" btn btn-light" @click="initText(true)">
+        <button class=" btn btn-light" @click="initText()">
           新規
         </button>
+        <div class="m-3">{{ `オートセーブ:${ isAutoSave ? '有効':'無効'}` }}</div>
       </div>
       <div class="mt-2 h-75" @keydown.ctrl.83="shortcutSave()">
         <InputArea
          class="float-left col-6"
-         :isInit="isInit"
+         id="inputArea"
          :fileText="fileText"
-         @initText="initText"
-         @updateText="updateText"
-         @scrollSync="scrollSync"
+         @update-text="updateText"
+         @scroll-sync="scrollSync"
         />
         <div v-show="!isChangeDisplay">
           <PreviewArea class="float-right col-6" :markdownText="fileText" :scrTop="scrTop" />
@@ -44,6 +42,8 @@ import InputArea from './parts/InputArea'
 import PreviewArea from './parts/PreviewArea'
 import MarkdownSlide from './parts/MarkdownSlide'
 
+let timer
+
 export default {
   name: 'editor',
   components: {
@@ -54,9 +54,11 @@ export default {
   data () {
     return {
       scrTop: 0,
-      isChangeDisplay: false,
-      isInit: false
+      isChangeDisplay: false
     }
+  },
+  mounted () {
+    this.$store.dispatch('readSetting')
   },
   computed: {
     // ボタンのテキストを状態に合わせて変更
@@ -71,9 +73,20 @@ export default {
     fileText () {
       return this.$store.getters.mdText
     },
+    // 保存前のテキスト
+    preText () {
+      return this.$store.getters.preText
+    },
     // vuexにfileがあるか状態確認
     status () {
       return this.$store.getters.status
+    },
+    userSetting () {
+      return this.$store.getters.userSetting
+    },
+    isAutoSave () {
+      if (this.userSetting.isAutoSave === null) return false
+      return this.userSetting.isAutoSave
     }
   },
   methods: {
@@ -88,6 +101,9 @@ export default {
     // 入力欄からのvuexにデータを渡す
     updateText (updateText) {
       this.$store.commit('setmdText', updateText)
+      if (this.isAutoSave) {
+        document.getElementById('inputArea').addEventListener('keypress', this.autoSave())
+      }
     },
     shortcutSave () {
       if (this.status) {
@@ -95,6 +111,19 @@ export default {
       } else {
         this.saveText()
       }
+    },
+    // オートセーブ
+    autoSave () {
+      clearTimeout(timer)
+      if (this.status && this.fileText !== this.preText) {
+        this.restartTimer()
+      }
+    },
+    restartTimer () {
+      clearTimeout(timer)
+      timer = setTimeout(() => {
+        this.overwriteText()
+      }, this.userSetting.saveInterval)
     },
     // 新規保存
     saveText () {
